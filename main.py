@@ -48,7 +48,7 @@ async def get_user_me(current_user: User = Depends(get_user)):
 async def add_user(user_model: UserModel, db: Session = Depends(get_db)):
     user = User(**user_model.model_dump())
     db.add(user)
-    db.commit
+    db.commit()
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True, port=8001)

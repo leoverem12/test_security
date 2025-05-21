@@ -1,10 +1,9 @@
 from typing import Optional, List,Union
-from pyndantic_models import UserModel, UserModelResponce
+from pyndantic_models import User, Order
 
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBasic, HTTPBasicCredentials
 from fastapi.concurrency import asynccontextmanager
-from sqlalchemy import select, insert,update
 from sqlalchemy.orm import Session
 import uvicorn
 
@@ -38,14 +37,14 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends()):
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
 
-@app.get("/user/me/")
+@app.get("/user/order/")
 async def get_user_me(current_user: User = Depends(get_user)):
     return current_user
 
 
 
 @app.post("/users/")
-async def add_user(user_model: UserModel, db: Session = Depends(get_db)):
+async def add_user(user_model: User, db: Session = Depends(get_db)):
     user = User(**user_model.model_dump())
     db.add(user)
     db.commit()
